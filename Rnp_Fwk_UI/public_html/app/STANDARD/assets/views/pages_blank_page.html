@@ -1,0 +1,40 @@
+<!-- start: PAGE TITLE -->
+<!-- /// controller:  'ngTableCtrl' -  localtion: assets/js/controllers/userCtrl2.js /// -->
+<div  ng-controller="userCtrl2">
+    <section id="page-title">
+        <div class="row">
+            <div class="col-sm-8">
+                <!--h1 class="mainTitle" translate="sidebar.nav.pages.BLANKPAGE">{{ mainTitle}}</h1-->
+                <h1 class="mainTitle" >{{ titulo}}</h1>
+                <span class="mainDescription">{{descripcion}}</span>
+            </div>
+            <div ncy-breadcrumb></div>
+        </div>
+    </section>
+    <!-- end: PAGE TITLE -->
+    <!-- start: YOUR CONTENT HERE -->
+    <div class="container-fluid container-fullw bg-white">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div>
+                    <p>
+                        <strong>Pagina:</strong> {{tableParams.page()}}
+                    </p>
+                    <p>
+                        <strong>Tamaño Pagina:</strong> {{tableParams.count()}}
+                    </p>
+                    <table ng-table="tableParams" class="table table-striped">
+                        <tr ng-repeat="user in $data">
+                            <td data-title="'Name'">{{user.name}}</td>
+                            <td data-title="'Alias'">{{user.alias}}</td>
+                            <td data-title="'Publisher'">{{user.publisher}}</td>
+                            <td data-title="'Gender'">{{user.gender}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end: YOUR CONTENT HERE -->
