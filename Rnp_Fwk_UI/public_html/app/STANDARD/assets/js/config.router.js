@@ -303,7 +303,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         ncyBreadcrumb: {
             label: 'Starter Page'
         },
-        resolve: loadSequence('ngTable','userCtrl2')
+        resolve: loadSequence('remoteDao','ngTable','userCtrl2')
     }).state('app.utilities', {
         url: '/utilities',
         template: '<div ui-view class="fade-in-up"></div>',

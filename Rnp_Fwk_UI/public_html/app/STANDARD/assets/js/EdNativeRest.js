@@ -235,11 +235,11 @@
 /* 
  * author: edcracken
  */
-
+console.info("cargando EdNativeRest.js");
 var modelPuEntitiesUrl = "http://localhost:8080/Renap_Fwk_Inventarios_JPA-API/persistence/API_PU/entity";
 var modelPuQuerisUrl = "http://localhost:8080/Renap_Fwk_Inventarios_JPA-API/persistence/API_PU/query";
 
-var remoteDao = angular.module('entityBrokerServices', []);
+var remoteDao = angular.module('remoteDao', []);
 
 //abstract class
 remoteDao.factory('Crud', [
