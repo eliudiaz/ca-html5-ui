@@ -1,403 +1,389 @@
 <!-- start: DASHBOARD TITLE -->
 <section id="page-title" class="padding-top-15 padding-bottom-15">
-	<div class="row">
-		<div class="col-sm-7">
-			<h1 class="mainTitle" translate="demo.WELCOME">{{ mainTitle }}</h1>
-			<span class="mainDescription">Verificacion Biometrica &amp; Biografica </span>
-		</div>		
-	</div>
+    <div class="row">
+        <div class="col-sm-7">
+            <h1 class="mainTitle" translate="demo.WELCOME">{{ mainTitle}}</h1>
+            <span class="mainDescription">Verificacion Biometrica &amp; Biografica </span>
+        </div>		
+    </div>
 </section>
 <!-- end: DASHBOARD TITLE -->
 <!-- start: FEATURED BOX LINKS -->
-<div class="container-fluid container-fullw bg-white">
-	<div class="row">
-		<div class="col-sm-4">
-			<div class="panel panel-white no-radius text-center">
-				<div class="panel-body">
-					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
-					<h2 class="StepTitle">Verificacion Biometrica Automatica</h2>
-					<p class="text-small">
-                                                Verificacion de huella almacenada en DPI                                                
-					</p>
-					<p class="links cl-effect-1">
-						<a href>
-                                                    <bold>Mostrar</bold>
-						</a>
-					</p>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-4">
-			<div class="panel panel-white no-radius text-center">
-				<div class="panel-body">
-					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
-					<h2 class="StepTitle">Verificacion Biometrica Manual</h2>
-					<p class="text-small">
-                                            Verificacion de huella en base a un numero de CUI
-					</p>
-					<p class="cl-effect-1">
-						<a href>
-							Mostrar
-						</a>
-					</p>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-4">
-			<div class="panel panel-white no-radius text-center">
-				<div class="panel-body">
-					<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
-					<h2 class="StepTitle">Verificacion Biografica Manual</h2>
-					<p class="text-small">
-						Verificacion de personas mediante numero de CUI
-					</p>
-					<p class="links cl-effect-1">
-						<a href>
-							Mostrar
-						</a>
-					</p>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- end: FEATURED BOX LINKS -->
-<!-- start: FIRST SECTION -->
+<div ng-controller="demoCtrl">
+    <div class="container-fluid container-fullw bg-white">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="panel panel-white no-radius text-center">
+                    <div class="panel-body">
+                        <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
+                        <h2 class="StepTitle">Verificacion Biometrica Automatica</h2>
+                        <p class="text-small">
+                            Verificacion de huella almacenada en DPI                                                
+                        </p>
+                        <p class="links cl-effect-1">
+                            <a href="javascript:;" ng-click="automatic = true;
+                                        manual = false;
+                                        manualBio = false;">
+                                <bold>Mostrar</bold>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-white no-radius text-center">
+                    <div class="panel-body">
+                        <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
+                        <h2 class="StepTitle">Verificacion Biometrica Manual</h2>
+                        <p class="text-small">
+                            Verificacion de huella en base a un numero de CUI
+                        </p>
+                        <p class="cl-effect-1">
+                            <a href="javascript:;" ng-click="automatic = false;
+                                        manual = false;
+                                        manualBio = true;">
+                                Mostrar
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-white no-radius text-center">
+                    <div class="panel-body">
+                        <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
+                        <h2 class="StepTitle">Verificacion Biografica Manual</h2>
+                        <p class="text-small">
+                            Verificacion de personas mediante numero de CUI
+                        </p>
+                        <p class="links cl-effect-1">
+                            <a href="javascript:;" ng-click="automatic = false;
+                                        manual = true;
+                                        manualBio = false;">
+                                Mostrar
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end: FEATURED BOX LINKS -->
+    <!-- start: FIRST SECTION -->
 
-<!-- end: FIRST SECTION -->
-<!-- start: SECOND SECTION -->
-<div class="container-fluid container-fullw bg-white">
-	<div class="row">
-		<div >
-			<div class="panel panel-white no-radius">
-				<div class="panel-body">
-					<div class="partition-light-grey padding-15 text-center margin-bottom-20">
-						<h4 class="no-margin">Monthly Statistics</h4>
-						<span class="text-light">based on the major browsers</span>
-					</div>
-					 <tabset class="tabbable">
-                                            <!-- start: TAB OVERVIEW -->
-                                            <tab heading="Resumen">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="user-left">
-                                                            <div class="center">
-                                                                <h4>{{persona.nombre}} {{persona.apellidos}}</h4>
-                                                                <div flow-init="{singleFile:true}" flow-name="obj.flow" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]">
-                                                                    <div class="user-image">
-                                                                        <div class="thumbnail">
-                                                                            <img ng-src="{{persona.foto}}" alt="" ng-if="!noImage">
-                                                                            <img src="assets/images/default-user.png" alt="" ng-if="noImage">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <hr>
-                                                            </div>
-                                                            <table class="table table-condensed">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th colspan="3">Datos Almacenados en DPI</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>CUI</td>
-                                                                        <td>
-                                                                            <a href="#">
-                                                                                {{persona.cui}}
-                                                                            </a></td>
-                                                                    </tr>	
-                                                                    <tr>
-                                                                        <td>Nombres</td>
-                                                                        <td>
-                                                                            <a href="#">
-                                                                                {{persona.nombres}}
-                                                                            </a></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Apellidos:</td>
-                                                                        <td>
-                                                                            <a href>
-                                                                                {{persona.apellidos}}
-                                                                            </a></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Pais Nacimiento:</td>
-                                                                        <td>{{persona.paisNacimiento}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Nacionalidad</td>
-                                                                        <td>
-                                                                            <a href>
-                                                                                {{persona.nacionalidad}}
-                                                                            </a></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <table class="table table-condensed">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th colspan="3">Informacion -RENAP-</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>CUI</td>
-                                                                        <td>
-                                                                            <a href="#">
-                                                                                {{persona_rnp.cui}}
-                                                                            </a></td>
-                                                                    </tr>	
-                                                                    <tr>
-                                                                        <td>Nombres</td>
-                                                                        <td>
-                                                                            <a href="#">
-                                                                                {{persona_rnp.nombres}}
-                                                                            </a></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Apellidos:</td>
-                                                                        <td>
-                                                                            <a href>
-                                                                                {{persona_rnp.apellidos}}
-                                                                            </a></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Pais Nacimiento:</td>
-                                                                        <td>{{persona_rnp.pais_nac}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Nacionalidad</td>
-                                                                        <td>
-                                                                            <a href>
-                                                                                {{persona_rnp.nacionalidad}}
-                                                                            </a></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Estado Civil</td>
-                                                                        <td>
-                                                                            <a href>
-                                                                                {{persona_rnp.estado_civil}}
-                                                                            </a></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Estado</td>
-                                                                        <td><span class="label label-sm label-info" ng-if="persona_rnp.estado === 1">Vivo</span>
-                                                                            <span class="label label-sm label-info" ng-if="persona_rnp.estado === 0">Fallecido</span></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <table class="table table-condensed">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th colspan="3">Informacion Adicional</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>Conyuge</td>
-                                                                        <td>{{pesona_rnp.conyuge}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Padre</td>
-                                                                        <td>{{pesona_rnp.padre}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Madre</td>
-                                                                        <td>{{pesona_rnp.padre}}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-
-                                                        </div>
-                                                    </div>                            
+    <!-- end: FIRST SECTION -->
+    <!-- start: SECOND SECTION -->
+    <div ng-show="automatic" class="container-fluid container-fullw bg-white">
+        <div class="row">
+            <div class="panel panel-white no-radius">
+                <div class="panel-body">
+                    <div class="partition-light-grey padding-15 text-center margin-bottom-20">
+                        <h4 class="no-margin">Verificacion Automatica</h4>
+                        <span class="text-light">* debe tener un DPI y la huella de propietario </span>
+                    </div>
+                    <div class="text-left" style="margin-bottom: 5px;">
+                        <a ng-disabled="busyReadDPI" class="btn btn-info btn-wide" href="#" ng-click="leerDPI()">
+                            Leer DPI
+                        </a>
+                        <a ng-disabled="!dpiReady || busyMatching" class="btn btn-success btn-wide" href="#" ng-click="matchHuella()">
+                            Verificar Huella
+                        </a>                            
+                    </div>
+                    <tabset ng-show="dpiReady" class="tabbable">
+                        <!-- start: TAB OVERVIEW -->
+                        <tab heading="Resumen">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="user-left">
+                                        <div class="center">
+                                            <h4>{{persona.nombre}} {{persona.apellidos}}</h4>
+                                            <div flow-init="{singleFile:true}" flow-name="obj.flow" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]">
+                                                <div class="user-image">
+                                                    <div class="thumbnail">
+                                                        <img ng-src="{{persona.foto}}" alt="" ng-if="!noImage">
+                                                        <img src="assets/images/default-user.png" alt="" ng-if="noImage">
+                                                    </div>
                                                 </div>
-                                            </tab>
-                                         </tabset>
-				</div>
-			</div>
-		</div>
-		
-	</div>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3">Datos Almacenados en DPI</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>CUI</td>
+                                                    <td>
+                                                        <a href="#">
+                                                            {{persona.cui}}
+                                                        </a></td>
+                                                </tr>	
+                                                <tr>
+                                                    <td>Nombres</td>
+                                                    <td>
+                                                        <a href="#">
+                                                            {{persona.nombres}}
+                                                        </a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Apellidos:</td>
+                                                    <td>
+                                                        <a href>
+                                                            {{persona.apellidos}}
+                                                        </a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pais Nacimiento:</td>
+                                                    <td>{{persona.paisNacimiento}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Nacionalidad</td>
+                                                    <td>
+                                                        <a href>
+                                                            {{persona.nacionalidad}}
+                                                        </a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3">Informacion -RENAP-</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>CUI</td>
+                                                    <td>
+                                                        <a href="#">
+                                                            {{persona_rnp.cui}}
+                                                        </a></td>
+                                                </tr>	
+                                                <tr>
+                                                    <td>Nombres</td>
+                                                    <td>
+                                                        <a href="#">
+                                                            {{persona_rnp.nombres}}
+                                                        </a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Apellidos:</td>
+                                                    <td>
+                                                        <a href>
+                                                            {{persona_rnp.apellidos}}
+                                                        </a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pais Nacimiento:</td>
+                                                    <td>{{persona_rnp.pais_nac}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Nacionalidad</td>
+                                                    <td>
+                                                        <a href>
+                                                            {{persona_rnp.nacionalidad}}
+                                                        </a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Estado Civil</td>
+                                                    <td>
+                                                        <a href>
+                                                            {{persona_rnp.estado_civil}}
+                                                        </a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Estado</td>
+                                                    <td><span class="label label-sm label-info" ng-if="persona_rnp.estado === 1">Vivo</span>
+                                                        <span class="label label-sm label-info" ng-if="persona_rnp.estado === 0">Fallecido</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3">Informacion Adicional</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Conyuge</td>
+                                                    <td>{{pesona_rnp.conyuge}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Padre</td>
+                                                    <td>{{pesona_rnp.padre}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Madre</td>
+                                                    <td>{{pesona_rnp.padre}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 class="over-title">Alertas</h5>
+                                    <div class="panel panel-white">
+                                        <div class="panel-body">
+                                            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+                                                {{alert.msg}}
+                                            </alert>
+                                            <button class='btn btn-primary btn-o' ng-click="closeAllAlert()">
+                                                Limpiar
+                                            </button>
+                                        </div></div>
+                                </div>
+                            </div>
+
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- end: SECOND SECTION -->
+    <!-- start: THIRD SECTION -->
+    <div ng-show="manualBio" class="container-fluid container-fullw bg-white">
+        <div class="row">
+            <div >
+                <div class="panel panel-white no-radius">
+                    <div class="panel-body">
+                        <div class="partition-light-grey padding-15 text-center margin-bottom-20">
+                            <h4 class="no-margin">Verificacion Biometrica Manual</h4>
+                            <span class="text-light">Debe proporcionar un numero de CUI y la huella de la persona</span>
+                        </div>
+                        <div class="col-lg-6 col-md-8">
+                            <div class="panel panel-white">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">Datos para verificacion</h5>
+                                </div>
+                                <div class="panel-body">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label for="cui">
+                                                No. de CUI
+                                            </label>
+                                            <input type="number" class="form-control" id="cui" placeholder="Ingrese numero de CUI">
+                                        </div>
+                                        <button type="button" ng-click="verificaBioManual()" class="btn btn-o btn-primary">
+                                            Verificar
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h5 class="over-title">Alertas</h5>
+                            <div class="panel panel-white">
+                                <div class="panel-body">
+                                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+                                        {{alert.msg}}
+                                    </alert>
+                                    <button class='btn btn-primary btn-o' ng-click="closeAllAlert()">
+                                        Limpiar
+                                    </button>
+                                </div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- end: THIRD SECTION -->
+    <!-- start: FOURTH SECTION -->
+    <div ng-show="manual" class="container-fluid container-fullw bg-white">
+        <div class="row">
+            <div >
+                <div class="panel panel-white no-radius">
+                    <div class="panel-body">
+                        <div class="partition-light-grey padding-15 text-center margin-bottom-20">
+                            <h4 class="no-margin">Monthly Statistics</h4>
+                            <span class="text-light">based on the major browsers</span>
+                        </div>
+                        <v-accordion>
+                            <!-- add expanded attribute to open first section -->
+                            <v-pane expanded>
+                                <v-pane-header>
+                                    This Month
+                                </v-pane-header>
+                                <v-pane-content>
+                                    <table class="table margin-bottom-0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="center">1</td>
+                                                <td>Google Chrome</td>
+                                                <td class="center">4909</td>
+                                                <td><i class="fa fa-caret-down text-red"></i></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="center">2</td>
+                                                <td>Mozilla Firefox</td>
+                                                <td class="center">3857</td>
+                                                <td><i class="fa fa-caret-up text-green"></i></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="center">3</td>
+                                                <td>Safari</td>
+                                                <td class="center">1789</td>
+                                                <td><i class="fa fa-caret-up text-green"></i></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="center">4</td>
+                                                <td>Internet Explorer</td>
+                                                <td class="center">612</td>
+                                                <td><i class="fa fa-caret-down text-red"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </v-pane-content>
+                            </v-pane>
+                            <v-pane>
+                                <v-pane-header>
+                                    Last Month
+                                </v-pane-header>
+                                <v-pane-content>
+                                    <table class="table margin-bottom-0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="center">1</td>
+                                                <td>Google Chrome</td>
+                                                <td class="center">5228</td>
+                                                <td><i class="fa fa-caret-up text-green"></i></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="center">2</td>
+                                                <td>Mozilla Firefox</td>
+                                                <td class="center">2853</td>
+                                                <td><i class="fa fa-caret-up text-green"></i></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="center">3</td>
+                                                <td>Safari</td>
+                                                <td class="center">1948</td>
+                                                <td><i class="fa fa-caret-up text-green"></i></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="center">4</td>
+                                                <td>Internet Explorer</td>
+                                                <td class="center">456</td>
+                                                <td><i class="fa fa-caret-down text-red"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </v-pane-content>
+                            </v-pane>
+                        </v-accordion>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- start: FOURTH SECTION -->
 </div>
-<!-- end: SECOND SECTION -->
-<!-- start: THIRD SECTION -->
-<div class="container-fluid container-fullw bg-white">
-	<div class="row">
-		<div >
-			<div class="panel panel-white no-radius">
-				<div class="panel-body">
-					<div class="partition-light-grey padding-15 text-center margin-bottom-20">
-						<h4 class="no-margin">Monthly Statistics</h4>
-						<span class="text-light">based on the major browsers</span>
-					</div>
-					<v-accordion>
-						<!-- add expanded attribute to open first section -->
-						<v-pane expanded>
-							<v-pane-header>
-								This Month
-							</v-pane-header>
-							<v-pane-content>
-								<table class="table margin-bottom-0">
-									<tbody>
-										<tr>
-											<td class="center">1</td>
-											<td>Google Chrome</td>
-											<td class="center">4909</td>
-											<td><i class="fa fa-caret-down text-red"></i></td>
-										</tr>
-										<tr>
-											<td class="center">2</td>
-											<td>Mozilla Firefox</td>
-											<td class="center">3857</td>
-											<td><i class="fa fa-caret-up text-green"></i></td>
-										</tr>
-										<tr>
-											<td class="center">3</td>
-											<td>Safari</td>
-											<td class="center">1789</td>
-											<td><i class="fa fa-caret-up text-green"></i></td>
-										</tr>
-										<tr>
-											<td class="center">4</td>
-											<td>Internet Explorer</td>
-											<td class="center">612</td>
-											<td><i class="fa fa-caret-down text-red"></i></td>
-										</tr>
-									</tbody>
-								</table>
-							</v-pane-content>
-						</v-pane>
-						<v-pane>
-							<v-pane-header>
-								Last Month
-							</v-pane-header>
-							<v-pane-content>
-								<table class="table margin-bottom-0">
-									<tbody>
-										<tr>
-											<td class="center">1</td>
-											<td>Google Chrome</td>
-											<td class="center">5228</td>
-											<td><i class="fa fa-caret-up text-green"></i></td>
-										</tr>
-										<tr>
-											<td class="center">2</td>
-											<td>Mozilla Firefox</td>
-											<td class="center">2853</td>
-											<td><i class="fa fa-caret-up text-green"></i></td>
-										</tr>
-										<tr>
-											<td class="center">3</td>
-											<td>Safari</td>
-											<td class="center">1948</td>
-											<td><i class="fa fa-caret-up text-green"></i></td>
-										</tr>
-										<tr>
-											<td class="center">4</td>
-											<td>Internet Explorer</td>
-											<td class="center">456</td>
-											<td><i class="fa fa-caret-down text-red"></i></td>
-										</tr>
-									</tbody>
-								</table>
-							</v-pane-content>
-						</v-pane>
-					</v-accordion>
-				</div>
-			</div>
-		</div>
-		
-	</div>
-</div>
-<!-- end: THIRD SECTION -->
-<!-- start: FOURTH SECTION -->
-<div class="container-fluid container-fullw bg-white">
-	<div class="row">
-		<div >
-			<div class="panel panel-white no-radius">
-				<div class="panel-body">
-					<div class="partition-light-grey padding-15 text-center margin-bottom-20">
-						<h4 class="no-margin">Monthly Statistics</h4>
-						<span class="text-light">based on the major browsers</span>
-					</div>
-					<v-accordion>
-						<!-- add expanded attribute to open first section -->
-						<v-pane expanded>
-							<v-pane-header>
-								This Month
-							</v-pane-header>
-							<v-pane-content>
-								<table class="table margin-bottom-0">
-									<tbody>
-										<tr>
-											<td class="center">1</td>
-											<td>Google Chrome</td>
-											<td class="center">4909</td>
-											<td><i class="fa fa-caret-down text-red"></i></td>
-										</tr>
-										<tr>
-											<td class="center">2</td>
-											<td>Mozilla Firefox</td>
-											<td class="center">3857</td>
-											<td><i class="fa fa-caret-up text-green"></i></td>
-										</tr>
-										<tr>
-											<td class="center">3</td>
-											<td>Safari</td>
-											<td class="center">1789</td>
-											<td><i class="fa fa-caret-up text-green"></i></td>
-										</tr>
-										<tr>
-											<td class="center">4</td>
-											<td>Internet Explorer</td>
-											<td class="center">612</td>
-											<td><i class="fa fa-caret-down text-red"></i></td>
-										</tr>
-									</tbody>
-								</table>
-							</v-pane-content>
-						</v-pane>
-						<v-pane>
-							<v-pane-header>
-								Last Month
-							</v-pane-header>
-							<v-pane-content>
-								<table class="table margin-bottom-0">
-									<tbody>
-										<tr>
-											<td class="center">1</td>
-											<td>Google Chrome</td>
-											<td class="center">5228</td>
-											<td><i class="fa fa-caret-up text-green"></i></td>
-										</tr>
-										<tr>
-											<td class="center">2</td>
-											<td>Mozilla Firefox</td>
-											<td class="center">2853</td>
-											<td><i class="fa fa-caret-up text-green"></i></td>
-										</tr>
-										<tr>
-											<td class="center">3</td>
-											<td>Safari</td>
-											<td class="center">1948</td>
-											<td><i class="fa fa-caret-up text-green"></i></td>
-										</tr>
-										<tr>
-											<td class="center">4</td>
-											<td>Internet Explorer</td>
-											<td class="center">456</td>
-											<td><i class="fa fa-caret-down text-red"></i></td>
-										</tr>
-									</tbody>
-								</table>
-							</v-pane-content>
-						</v-pane>
-					</v-accordion>
-				</div>
-			</div>
-		</div>
-		
-	</div>
-</div>
-<!-- start: FOURTH SECTION -->

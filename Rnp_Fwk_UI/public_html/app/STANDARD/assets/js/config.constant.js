@@ -27,6 +27,7 @@ app.constant('JS_REQUIRES', {
         'touchspin-plugin': ['../bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js', '../bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css'],
         //*** Controllers
         'dashboardCtrl': 'assets/js/controllers/dashboardCtrl.js',
+        'demoCtrl': 'assets/js/controllers/demoCtrl.js',
         'iconsCtrl': 'assets/js/controllers/iconsCtrl.js',
         'vAccordionCtrl': 'assets/js/controllers/vAccordionCtrl.js',
         'ckeditorCtrl': 'assets/js/controllers/ckeditorCtrl.js',

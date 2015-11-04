@@ -36,7 +36,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     }).state('app.demo', {
         url: "/demo",
         templateUrl: "assets/views/demo_menu.html",
-        resolve: loadSequence('jquery-sparkline', 'dashboardCtrl'),
+        resolve: loadSequence('jquery-sparkline', 'demoCtrl'),
         title: 'Demo',
         ncyBreadcrumb: {
             label: 'Verificacion biografica/biometrica'
