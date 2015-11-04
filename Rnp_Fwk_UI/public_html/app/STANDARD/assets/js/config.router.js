@@ -25,7 +25,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     // APPLICATION ROUTES
     // -----------------------------------
     // For any unmatched url, redirect to /app/dashboard
-    $urlRouterProvider.otherwise("/app/dashboard");
+    $urlRouterProvider.otherwise("/app/demo");
     //
     // Set up the states
     $stateProvider.state('app', {
@@ -33,6 +33,14 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         templateUrl: "assets/views/app.html",
         resolve: loadSequence('modernizr', 'moment', 'angularMoment', 'uiSwitch', 'perfect-scrollbar-plugin', 'toaster', 'ngAside', 'vAccordion', 'sweet-alert', 'chartjs', 'tc.chartjs', 'oitozero.ngSweetAlert', 'chatCtrl'),
         abstract: true
+    }).state('app.demo', {
+        url: "/demo",
+        templateUrl: "assets/views/demo_menu.html",
+        resolve: loadSequence('jquery-sparkline', 'dashboardCtrl'),
+        title: 'Demo',
+        ncyBreadcrumb: {
+            label: 'Verificacion biografica/biometrica'
+        }
     }).state('app.dashboard', {
         url: "/dashboard",
         templateUrl: "assets/views/dashboard.html",
@@ -258,6 +266,14 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         ncyBreadcrumb: {
             label: 'Pages'
         }
+    }).state('app.pages.persona', {
+        url: '/user',
+        templateUrl: "assets/views/pages_persona_info.html",
+        title: 'Verificacion Personas',
+        ncyBreadcrumb: {
+            label: 'Verificacion Personas'
+        },
+        resolve: loadSequence('personaCtrl')
     }).state('app.pages.user', {
         url: '/user',
         templateUrl: "assets/views/pages_user_profile.html",

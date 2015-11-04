@@ -2,7 +2,7 @@
 /** 
   * controller for User Profile Example
 */
-app.controller('userCtrl', ["$scope", "flowFactory", function ($scope, flowFactory) {
+app.controller('UserCtrl', ["$scope", "flowFactory", function ($scope, flowFactory) {
     $scope.removeImage = function () {
         $scope.noImage = true;
     };

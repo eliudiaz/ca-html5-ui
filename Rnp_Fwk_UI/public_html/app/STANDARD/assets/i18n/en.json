@@ -1,4 +1,7 @@
 {
+  "demo": {
+    "WELCOME": "PLATAFORMA DE SERVICIOS ELECTRONICOS"
+  },
   "dashboard": {
     "WELCOME": "Welcome to {{appName}}"
   },
@@ -53,6 +56,9 @@
       "PLACEHOLDER": "Search..."
     },
     "nav": {
+      "demo": {
+      	"MAIN": "Demo Verificacion"
+      },
       "dashboard": {
       	"MAIN": "Dashboard"
       },
@@ -104,7 +110,8 @@
         "TIMELINE": "Timeline",
         "CALENDAR": "Calendar",
         "MESSAGES": "Messages",
-        "BLANKPAGE": "Starter Page"
+        "BLANKPAGE": "Starter Page",
+        "PERSONAINFO":"Verificacion de Personas"
       },
       "utilities": {
         "MAIN": "Utilities",

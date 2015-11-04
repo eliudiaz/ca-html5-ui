@@ -43,6 +43,7 @@ app.constant('JS_REQUIRES', {
         'validationCtrl': ['assets/js/controllers/validationCtrl.js'],
         'userCtrl': ['assets/js/controllers/userCtrl.js'],
         'userCtrl2': ['assets/js/controllers/userCtrl2.js'],
+        'personaCtrl': ['assets/js/controllers/personaCtrl.js'],
         'selectCtrl': 'assets/js/controllers/selectCtrl.js',
         'wizardCtrl': 'assets/js/controllers/wizardCtrl.js',
         'uploadCtrl': 'assets/js/controllers/uploadCtrl.js',
