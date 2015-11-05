@@ -2,7 +2,7 @@
 /** 
  * controllers used for the dashboard
  */
-app.controller('demoCtrl', ["$scope", "$timeout", 'SweetAlert', "cfpLoadingBar", function ($scope, $timeout, SweetAlert, cfpLoadingBar) {
+app.controller('demoCtrl', ["$scope","Query", "$timeout", 'SweetAlert', "cfpLoadingBar", function ($scope, Query, $timeout, SweetAlert, cfpLoadingBar) {
         $scope.automatic = false;
         $scope.manual = false;
         $scope.manualBio = false;
@@ -22,27 +22,26 @@ app.controller('demoCtrl', ["$scope", "$timeout", 'SweetAlert', "cfpLoadingBar",
         $scope.closeAllAlert = function () {
             $scope.alerts = [];
         };
-        
-        $scope.verificaBioManual=function(){
-            $scope.busyMatching=true;
+
+        $scope.verificaBioManual = function () {
+            $scope.busyMatching = true;
         };
+       
         $scope.leerDPI = function () {
             cfpLoadingBar.start();
-            $scope.busyReadDPI = true;
-            $scope.dpiReady = false;
-            $timeout(function () {
-                cfpLoadingBar.set(0.3);
-            }, 1000);
-            $timeout(function () {
-                cfpLoadingBar.complete();
-                $scope.parseDPIData();
-            }, 1000);
+            cfpLoadingBar.set(0.4);
+            Query.get('http://localhost:4567/dpi-data', function (r,e) {
+                cfpLoadingBar.set(0.6);
+                $scope.parseDPIData(r);            
+            });
+            cfpLoadingBar.complete();
         };
+        $scope.persona={nombres:"",apellidos:"",fechaNacimiento:"",paisNacimiento:""};
         $scope.dpiReadRest = 0;
-        $scope.parseDPIData = function () {
+        $scope.parseDPIData = function (r) {
             $scope.busyReadDPI = false;
             $scope.dpiReady = true;
-            $scope.dpiReadRest = $scope.dpiReadRest === 0 ? 1 : 0;
+            $scope.dpiReadRest = r===null ? 0 : 1;
             if ($scope.dpiReadRest <= 0) {
                 SweetAlert.swal({
                     title: "Lectura fallida!",
@@ -51,11 +50,15 @@ app.controller('demoCtrl', ["$scope", "$timeout", 'SweetAlert', "cfpLoadingBar",
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "Rintentar!"
-                },function(){
-                    $scope.leerDPI();
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        $scope.leerDPI();
+                    }
                 });
-                $scope.dpiReady=false;
+                $scope.dpiReady = false;
             } else {
+                $scope.persona = r;
+                $scope.noImage=false;
                 SweetAlert.swal({
                     title: "Lectura exitosa!",
                     text: "Los datos del DPI han sido leidos!",
@@ -63,6 +66,17 @@ app.controller('demoCtrl', ["$scope", "$timeout", 'SweetAlert', "cfpLoadingBar",
                     confirmButtonColor: "#007AFF"
                 });
             }
+        };
+        $scope.leerHuella = function () {
+            $scope.busyMatching = true;
+            $scope.progress = 0.3;
+            cfpLoadingBar.start();
+            $scope.addAlert("info", "Coloque su dedo indice derecho en el lector!");
+            $scope.addAlert("info", "Espere a que la luz cambie a roja!");
+            Query.get('http://localhost:4567/read-finger', function (r,e) {
+                cfpLoadingBar.set(0.6);
+                $scope.parseDPIData(r);            
+            });
         };
         $scope.matchHuella = function () {
             $scope.busyMatching = true;
@@ -81,7 +95,7 @@ app.controller('demoCtrl', ["$scope", "$timeout", 'SweetAlert', "cfpLoadingBar",
                 if ($scope.progress >= 1) {
                     cfpLoadingBar.complete();
                     $scope.busyMatching = false;
-                    $scope.matchResult = $scope.matchResult === 0 ? 1 : 0;
+                    $scope.matchResult =  0;
                     $scope.parseMatchResult();
                 } else {
                     $scope.waitMatchRes();
@@ -90,10 +104,10 @@ app.controller('demoCtrl', ["$scope", "$timeout", 'SweetAlert', "cfpLoadingBar",
         };
         $scope.parseMatchResult = function () {
             if ($scope.matchResult <= 0) {
-                $scope.addAlert("danger", "Verificacion fallida: Huella no coincide!")
+                $scope.addAlert("danger", "Verificacion fallida: Huella no coincide!");
             }
             if ($scope.matchResult > 0) {
-                $scope.addAlert("success", "Verificacion exitosa!")
+                $scope.addAlert("success", "Verificacion exitosa!");
             }
         };
         $scope.persona = {

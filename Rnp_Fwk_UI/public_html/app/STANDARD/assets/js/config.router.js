@@ -24,7 +24,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
 
     // APPLICATION ROUTES
     // -----------------------------------
-    // For any unmatched url, redirect to /app/dashboard
+    // For any unmatch url, redirect to /app/dashboard
     $urlRouterProvider.otherwise("/app/demo");
     //
     // Set up the states
@@ -36,7 +36,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     }).state('app.demo', {
         url: "/demo",
         templateUrl: "assets/views/demo_menu.html",
-        resolve: loadSequence('jquery-sparkline', 'demoCtrl'),
+        resolve: loadSequence('remoteDao','demoCtrl'),
         title: 'Demo',
         ncyBreadcrumb: {
             label: 'Verificacion biografica/biometrica'
@@ -319,7 +319,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         ncyBreadcrumb: {
             label: 'Starter Page'
         },
-        resolve: loadSequence('remoteDao','ngTable','userCtrl2')
+        resolve: loadSequence('edHttp','ngTable','userCtrl2')
     }).state('app.utilities', {
         url: '/utilities',
         template: '<div ui-view class="fade-in-up"></div>',

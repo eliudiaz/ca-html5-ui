@@ -231,7 +231,7 @@
             })(['get', 'post', 'put', 'patch', 'delete'], defineMethod);
             return Loader;
         });
-        
+
 /* 
  * author: edcracken
  */
@@ -278,14 +278,19 @@ remoteDao.factory('Query', [function () {
         this.response = null;
         var vigil = this;
 
-        this.get = function (entity) {
-            window.Loader.get(modelPuQuerisUrl + '/' + entity + '.findAll', null, function (e, r) {
-                vigil.response = r;
+        this.get = function (url, callback) {
+            window.Loader.get(url, null, function (e, r) {
+                vigil.response=r;
                 console.info("+" + JSON.stringify(vigil.response));
+                if (callback) {
+                    callback(r, e);
+                }
             });
             console.info("-" + JSON.stringify(vigil.response));
             return vigil.response;
         };
+
+
         return {get: this.get}
     }]);
 
