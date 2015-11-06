@@ -2,7 +2,7 @@
 /** 
  * controllers used for the dashboard
  */
-app.controller('demoCtrl', ["$scope","Query", "$timeout", 'SweetAlert', "cfpLoadingBar", function ($scope, Query, $timeout, SweetAlert, cfpLoadingBar) {
+app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoadingBar", function ($scope, Query, $timeout, SweetAlert, cfpLoadingBar) {
         $scope.automatic = false;
         $scope.manual = false;
         $scope.manualBio = false;
@@ -26,22 +26,41 @@ app.controller('demoCtrl', ["$scope","Query", "$timeout", 'SweetAlert', "cfpLoad
         $scope.verificaBioManual = function () {
             $scope.busyMatching = true;
         };
-       
+        $scope.defCallBack = function () {
+        };
         $scope.leerDPI = function () {
             cfpLoadingBar.start();
-            cfpLoadingBar.set(0.4);
-            Query.get('http://localhost:4567/dpi-data', function (r,e) {
-                cfpLoadingBar.set(0.6);
-                $scope.parseDPIData(r);            
-            });
-            cfpLoadingBar.complete();
+            cfpLoadingBar.set(0.3);
+            $scope.defCallBack = $scope.parseDPIData;
+            Query.get('http://localhost:4567/push-dpi-read', function (r, e) {                
+                $scope.getPushStatus(r.id);
+            });            
         };
-        $scope.persona={nombres:"",apellidos:"",fechaNacimiento:"",paisNacimiento:""};
+        $scope.getPushStatus = function (id) {
+            var rId = id;
+            Query.get('http://localhost:4567/get-status?id=' + id, function (r, e) {
+                if (r.ready) {
+                    $scope.getPushResult(rId);
+                } else {
+                    $timeout(function () {
+                        $scope.getPushStatus(rId);
+                    }, 1000);
+                }
+            });
+        };
+        $scope.getPushResult = function (id) {
+            Query.get('http://localhost:4567/get-result?id=' + id, function (r, e) {
+                cfpLoadingBar.set(0.6);
+                $scope.defCallBack(r.data);
+                cfpLoadingBar.complete();
+            });
+        };
+        $scope.persona = {nombres: "", apellidos: "", fechaNacimiento: "", paisNacimiento: ""};
         $scope.dpiReadRest = 0;
         $scope.parseDPIData = function (r) {
             $scope.busyReadDPI = false;
             $scope.dpiReady = true;
-            $scope.dpiReadRest = r===null ? 0 : 1;
+            $scope.dpiReadRest = r === null ? 0 : 1;
             if ($scope.dpiReadRest <= 0) {
                 SweetAlert.swal({
                     title: "Lectura fallida!",
@@ -58,7 +77,7 @@ app.controller('demoCtrl', ["$scope","Query", "$timeout", 'SweetAlert', "cfpLoad
                 $scope.dpiReady = false;
             } else {
                 $scope.persona = r;
-                $scope.noImage=false;
+                $scope.noImage = false;
                 SweetAlert.swal({
                     title: "Lectura exitosa!",
                     text: "Los datos del DPI han sido leidos!",
@@ -73,9 +92,9 @@ app.controller('demoCtrl', ["$scope","Query", "$timeout", 'SweetAlert', "cfpLoad
             cfpLoadingBar.start();
             $scope.addAlert("info", "Coloque su dedo indice derecho en el lector!");
             $scope.addAlert("info", "Espere a que la luz cambie a roja!");
-            Query.get('http://localhost:4567/read-finger', function (r,e) {
+            Query.get('http://localhost:4567/read-finger', function (r, e) {
                 cfpLoadingBar.set(0.6);
-                $scope.parseDPIData(r);            
+                $scope.parseDPIData(r);
             });
         };
         $scope.matchHuella = function () {
@@ -95,7 +114,7 @@ app.controller('demoCtrl', ["$scope","Query", "$timeout", 'SweetAlert', "cfpLoad
                 if ($scope.progress >= 1) {
                     cfpLoadingBar.complete();
                     $scope.busyMatching = false;
-                    $scope.matchResult =  0;
+                    $scope.matchResult = 0;
                     $scope.parseMatchResult();
                 } else {
                     $scope.waitMatchRes();
