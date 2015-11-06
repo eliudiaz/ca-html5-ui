@@ -2,7 +2,7 @@
 /** 
  * controllers used for the dashboard
  */
-app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoadingBar", function ($scope, Query, $timeout, SweetAlert, cfpLoadingBar) {
+app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoadingBar",function ($scope, Query, $timeout, SweetAlert, cfpLoadingBar) {
         $scope.automatic = false;
         $scope.manual = false;
         $scope.manualBio = false;
@@ -23,18 +23,25 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
             $scope.alerts = [];
         };
 
-        $scope.verificaBioManual = function () {
-            $scope.busyMatching = true;
-        };
         $scope.defCallBack = function () {
         };
+
         $scope.leerDPI = function () {
+            $scope.timeOutPush = 10000;
             cfpLoadingBar.start();
-            cfpLoadingBar.set(0.3);
             $scope.defCallBack = $scope.parseDPIData;
-            Query.get('http://localhost:4567/push-dpi-read', function (r, e) {                
+            Query.get('http://localhost:4567/push-dpi-read', function (r, e) {
                 $scope.getPushStatus(r.id);
-            });            
+            });
+        };
+        $scope.timeOutPush = 5000;
+        $scope.onTimeoutCallBack = function () {
+        };
+        $scope.cancelPush = function (id) {
+            $timeout(function () {
+                Query.get('http://localhost:4567/push-cancel?id=' + id, function (r, e) {
+                });
+            }, 100);
         };
         $scope.getPushStatus = function (id) {
             var rId = id;
@@ -42,17 +49,37 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
                 if (r.ready) {
                     $scope.getPushResult(rId);
                 } else {
-                    $timeout(function () {
-                        $scope.getPushStatus(rId);
-                    }, 1000);
+                    if ($scope.timeOutPush <= 0) {
+                        SweetAlert.swal({
+                            title: "Tiempo de espera agotado!",
+                            text: "La solicitud ha tomado mas del tiempo aceptable, pruebe nuevamente.",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#DD6B55",
+                        }, function () {
+                            $scope.cancelPush(rId);
+                            $scope.timeOutPush = 5000;
+                            $scope.onTimeoutCallBack();
+                            cfpLoadingBar.complete();
+                        });
+                    } else {
+                        $scope.timeOutPush = $scope.timeOutPush - 1000;
+                        $timeout(function () {
+                            $scope.getPushStatus(rId);
+                        }, 1000);
+                    }
                 }
             });
         };
+        $scope.complete = true;
         $scope.getPushResult = function (id) {
             Query.get('http://localhost:4567/get-result?id=' + id, function (r, e) {
+                $scope.complete = true;
                 cfpLoadingBar.set(0.6);
                 $scope.defCallBack(r.data);
-                cfpLoadingBar.complete();
+                if ($scope.complete) {
+                    cfpLoadingBar.complete();                   
+                }
             });
         };
         $scope.persona = {nombres: "", apellidos: "", fechaNacimiento: "", paisNacimiento: ""};
@@ -87,77 +114,77 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
             }
         };
         $scope.leerHuella = function () {
+            $scope.timeOutPush = 10000;
             $scope.busyMatching = true;
-            $scope.progress = 0.3;
+            $scope.onTimeoutCallBack = function () {
+                $scope.busyMatching = false;
+            };
             cfpLoadingBar.start();
             $scope.addAlert("info", "Coloque su dedo indice derecho en el lector!");
             $scope.addAlert("info", "Espere a que la luz cambie a roja!");
-            Query.get('http://localhost:4567/read-finger', function (r, e) {
-                cfpLoadingBar.set(0.6);
-                $scope.parseDPIData(r);
+            $scope.defCallBack = $scope.matchHuella;
+            Query.get('http://localhost:4567/push-huella-read', function (r, e) {
+                $scope.getPushStatus(r.id);
             });
         };
-        $scope.matchHuella = function () {
-            $scope.busyMatching = true;
-            $scope.progress = 0.3;
-            $scope.addAlert("info", "Coloque su dedo indice en el lector cuando encienda la luz!");
+        $scope.cui1 = "";
+        $scope.matchHuella = function (r) {
+            $scope.complete = false;
+            $scope.timeOutPush = 15000;
             cfpLoadingBar.start();
-            cfpLoadingBar.set($scope.progress);
-            $scope.waitMatchRes();
+            $scope.addAlert("info", r.valor);
+            $scope.defCallBack = $scope.parseMatchResult;
+            Query.get('http://localhost:4567/push-huella-compare?cui=' + $scope.cui1, function (r, e) {
+                $scope.getPushStatus(r.id);
+            });
         };
-        $scope.progress = 0;
-        $scope.matchResult = 0;
-        $scope.waitMatchRes = function () {
-            $timeout(function () {
-                $scope.progress = $scope.progress + 0.3;
-                cfpLoadingBar.set($scope.progress);
-                if ($scope.progress >= 1) {
-                    cfpLoadingBar.complete();
-                    $scope.busyMatching = false;
-                    $scope.matchResult = 0;
-                    $scope.parseMatchResult();
-                } else {
-                    $scope.waitMatchRes();
-                }
-            }, 1000);
-        };
-        $scope.parseMatchResult = function () {
-            if ($scope.matchResult <= 0) {
-                $scope.addAlert("danger", "Verificacion fallida: Huella no coincide!");
+        $scope.parseMatchResult = function (r) {
+            if (r.result <= 0) {
+                SweetAlert.swal({
+                    title: "Resultado de MOC",
+                    text: "La huella no coincide con el CUI ingresado!",
+                    type: "warning",
+                    confirmButtonColor: "#007AFF"
+                });
+                return;
             }
-            if ($scope.matchResult > 0) {
-                $scope.addAlert("success", "Verificacion exitosa!");
+            if (r.result > 0) {
+                SweetAlert.swal({
+                    title: "Resultado de MOC",
+                    text: "La huella coincide con el CUI ingresado!",
+                    type: "success",
+                    confirmButtonColor: "#007AFF"
+                });
+                return;
+            }
+            $scope.addAlert("danger", "<strong>Error: No se ha podido determinar si la huella coincide!</strong>");
+            $scope.busyMatching = false;
+        };
+        $scope.cui2 = "";
+        $scope.buscarOnline = function () {
+            $scope.timeOutPush = 8000;
+            $scope.busySearching = true;
+            $scope.onTimeoutCallBack = function () {
+                $scope.busySearching = false;
+            };
+            cfpLoadingBar.start();
+            $scope.addAlert("info", "Coloque su dedo indice derecho en el lector!");
+            $scope.addAlert("info", "Espere a que la luz cambie a roja!");
+            $scope.defCallBack = $scope.parseOnlineRes;
+            Query.get('http://localhost:4567/push-bio-search?cui=' + $scope.cui2, function (r, e) {
+                $scope.getPushStatus(r.id);
+            });
+        };
+        $scope.persona_rnp = {cui: '', nombres: '', hit: false};
+        $scope.parseOnlineRes = function (r) {
+            $scope.persona_rnp = r;
+            if ($scope.persona_rnp.hit) {
+                SweetAlert.swal({
+                    title: "Resultado",
+                    text: "No se ha encontrado a la persona!",
+                    type: "warning",
+                    confirmButtonColor: "#007AFF"
+                });
             }
         };
-        $scope.persona = {
-            cui: '',
-            nombres: '',
-            apellidos: '',
-            paisNacimiento: '',
-            nacionalidad: '',
-            foto: ''
-        };
-        $scope.persona_rnp = {
-            cui: '',
-            nombres: '',
-            apellidos: '',
-            paisNac: '',
-            nacionalidad: '',
-            estadoCivil: '',
-            estado: '',
-            conyuge: ''
-        };
-
-        /*  $scope.leerDPI = function () {
-         cfpLoadingBar.start();
-         $timeout(function () {
-         cfpLoadingBar.set(0.3);
-         }, 1000);
-         $timeout(function () {
-         cfpLoadingBar.set(0.6);
-         }, 2000);
-         $timeout(function () {
-         cfpLoadingBar.complete();
-         }, 5000);
-         };*/
     }]);
