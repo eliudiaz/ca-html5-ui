@@ -2,7 +2,7 @@
 /** 
  * controllers used for the dashboard
  */
-app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoadingBar",function ($scope, Query, $timeout, SweetAlert, cfpLoadingBar) {
+app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoadingBar", function ($scope, Query, $timeout, SweetAlert, cfpLoadingBar) {
         $scope.automatic = false;
         $scope.manual = false;
         $scope.manualBio = false;
@@ -78,7 +78,7 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
                 cfpLoadingBar.set(0.6);
                 $scope.defCallBack(r.data);
                 if ($scope.complete) {
-                    cfpLoadingBar.complete();                   
+                    cfpLoadingBar.complete();
                 }
             });
         };
@@ -175,16 +175,25 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
                 $scope.getPushStatus(r.id);
             });
         };
-        $scope.persona_rnp = {cui: '', nombres: '', hit: false};
+        $scope.persona_rnp = {hit: false};
         $scope.parseOnlineRes = function (r) {
+            $scope.busySearching = false;
             $scope.persona_rnp = r;
-            if ($scope.persona_rnp.hit) {
+            $scope.noImage=false;
+            if (!$scope.persona_rnp.hit) {
                 SweetAlert.swal({
                     title: "Resultado",
                     text: "No se ha encontrado a la persona!",
                     type: "warning",
                     confirmButtonColor: "#007AFF"
                 });
+                return;
             }
+            SweetAlert.swal({
+                title: "Resultado",
+                text: "Se encontraron datos para la persona!",
+                type: "success",
+                confirmButtonColor: "#007AFF"
+            });
         };
     }]);
