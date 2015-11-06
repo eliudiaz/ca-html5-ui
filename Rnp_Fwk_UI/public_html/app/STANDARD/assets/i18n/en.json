@@ -57,7 +57,8 @@
     },
     "nav": {
       "demo": {
-      	"MAIN": "Demo Verificacion"
+      	"MAIN": "Demo Verificacion",
+        "BYRON":"ESta es la demo de Byron"
       },
       "dashboard": {
       	"MAIN": "Dashboard"

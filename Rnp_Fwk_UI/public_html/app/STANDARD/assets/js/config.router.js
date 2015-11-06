@@ -33,6 +33,14 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         templateUrl: "assets/views/app.html",
         resolve: loadSequence('modernizr', 'moment', 'angularMoment', 'uiSwitch', 'perfect-scrollbar-plugin', 'toaster', 'ngAside', 'vAccordion', 'sweet-alert', 'chartjs', 'tc.chartjs', 'oitozero.ngSweetAlert', 'chatCtrl'),
         abstract: true
+    }).state('app.byron', {
+        url: "/byron",
+        templateUrl: "assets/views/test_byron.html",
+        resolve: loadSequence('remoteDao','ngTable','byronCtrl'),
+        title: 'Demo',
+        ncyBreadcrumb: {
+            label: 'Demo/Byron'
+        }
     }).state('app.demo', {
         url: "/demo",
         templateUrl: "assets/views/demo_menu.html",
