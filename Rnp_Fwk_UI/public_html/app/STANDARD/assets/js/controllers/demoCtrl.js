@@ -27,7 +27,7 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
         };
 
         $scope.leerDPI = function () {
-            $scope.timeOutPush = 10000;
+            $scope.timeOutPush = 20000;
             cfpLoadingBar.start();
             $scope.defCallBack = $scope.parseDPIData;
             Query.get('http://localhost:4567/push-dpi-read', function (r, e) {
