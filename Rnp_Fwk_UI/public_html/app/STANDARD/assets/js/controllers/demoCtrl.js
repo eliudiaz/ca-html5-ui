@@ -26,14 +26,6 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
         $scope.defCallBack = function () {
         };
 
-        $scope.leerDPI = function () {
-            $scope.timeOutPush = 20000;
-            cfpLoadingBar.start();
-            $scope.defCallBack = $scope.parseDPIData;
-            Query.get('http://localhost:4567/push-dpi-read', function (r, e) {
-                $scope.getPushStatus(r.id);
-            });
-        };
         $scope.timeOutPush = 5000;
         $scope.onTimeoutCallBack = function () {
         };
@@ -84,6 +76,14 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
         };
         $scope.persona = {nombres: "", apellidos: "", fechaNacimiento: "", paisNacimiento: ""};
         $scope.dpiReadRest = 0;
+        $scope.leerDPI = function () {
+            $scope.timeOutPush = 20000;
+            cfpLoadingBar.start();
+            $scope.defCallBack = $scope.parseDPIData;
+            Query.get('http://localhost:4567/push-dpi-read', function (r, e) {
+                $scope.getPushStatus(r.id);
+            });
+        };
         $scope.parseDPIData = function (r) {
             $scope.busyReadDPI = false;
             $scope.dpiReady = true;
@@ -105,14 +105,19 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
             } else {
                 $scope.persona = r;
                 $scope.noImage = false;
-                SweetAlert.swal({
-                    title: "Lectura exitosa!",
-                    text: "Los datos del DPI han sido leidos!",
-                    type: "success",
-                    confirmButtonColor: "#007AFF"
-                });
+                if ($scope.afterLeerDPI !== null) {
+                    $scope.afterLeerDPI();
+                } else {
+                    SweetAlert.swal({
+                        title: "Lectura exitosa!",
+                        text: "Los datos del DPI han sido leidos!",
+                        type: "success",
+                        confirmButtonColor: "#007AFF"
+                    });
+                }
             }
         };
+        $scope.afterLeerDPI = null;
         $scope.leerHuella = function () {
             $scope.timeOutPush = 10000;
             $scope.busyMatching = true;
@@ -120,7 +125,7 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
                 $scope.busyMatching = false;
             };
             cfpLoadingBar.start();
-            $scope.addAlert("info", "Coloque su dedo indice derecho en el lector!");
+            $scope.addAlert("info", "Coloque su dedo PULGAR DERECHO en el lector!");
             $scope.addAlert("info", "Espere a que la luz cambie a roja!");
             $scope.defCallBack = $scope.matchHuella;
             Query.get('http://localhost:4567/push-huella-read', function (r, e) {
@@ -160,6 +165,26 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
             $scope.addAlert("danger", "<strong>Error: No se ha podido determinar si la huella coincide!</strong>");
             $scope.busyMatching = false;
         };
+        $scope.leerDPI_Huella = function () {
+            $scope.afterLeerDPI = $scope.callBackAfterParseDPI;
+            $scope.leerDPI();
+        };
+        $scope.callBackAfterParseDPI = function () {
+            $scope.afterLeerHuella = null;
+            SweetAlert.swal({
+                title: "Lectura de Huella",
+                text: "Huella del DPI Lista!, Presione en LEER HUELLA y coloque su pulgar DERECHO!",
+                type: "success",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "LEER HUELLA"
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    $scope.cui1= $scope.persona.cui;
+                    $scope.leerHuella();
+                }
+            });
+        };
         $scope.cui2 = "";
         $scope.buscarOnline = function () {
             $scope.timeOutPush = 8000;
@@ -179,7 +204,7 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
         $scope.parseOnlineRes = function (r) {
             $scope.busySearching = false;
             $scope.persona_rnp = r;
-            $scope.noImage=false;
+            $scope.noImage = false;
             if (!$scope.persona_rnp.hit) {
                 SweetAlert.swal({
                     title: "Resultado",

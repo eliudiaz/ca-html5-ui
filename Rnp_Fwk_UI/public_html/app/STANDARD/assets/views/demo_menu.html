@@ -34,7 +34,25 @@
                 <div class="panel panel-white no-radius text-center">
                     <div class="panel-body">
                         <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
-                        <h2 class="StepTitle">Verificacion Electronica de Huella</h2>
+                        <h2 class="StepTitle">Verificacion Huella con DPI</h2>
+                        <p class="text-small">
+                            Carga la informacion almacenada en el DPI
+                        </p>
+                        <p class="links cl-effect-1">
+                            <a href="javascript:;" ng-click="automatic = true;
+                                            manual = true;
+                                            manualBio = false;">
+                                <bold>Mostrar</bold>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-white no-radius text-center">
+                    <div class="panel-body">
+                        <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
+                        <h2 class="StepTitle">Verificacion Huella En Linea</h2>
                         <p class="text-small">
                             Verifica que la huella corresponde al CUI ingresado.
                         </p>
@@ -166,6 +184,58 @@
 
     </div>
     <!-- end: SECOND SECTION -->
+    <!-- start: THIRD SECTION -->
+    <div ng-show="manualBio && automatic" class="container-fluid container-fullw bg-white">
+        <div class="row">
+            <div >
+                <div class="panel panel-white no-radius">
+                    <div class="panel-body">
+                        <div class="partition-light-grey padding-15 text-center margin-bottom-20">
+                            <h4 class="no-margin">Verificacion Huella de DPI</h4>
+                            <span class="text-light">Debe insertar un DPI y proporcinar huella de PULGAR DERECHO</span>
+                        </div>
+                        <div class="col-lg-6 col-md-8">
+                            <div class="panel panel-white">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">Datos para verificacion</h5>
+                                </div>
+                                <div class="panel-body">
+                                    <form role="form">
+                                        <!--                                        <div class="form-group">
+                                                                                    <label for="cui">
+                                                                                        No. de CUI
+                                                                                    </label>
+                                                                                    <input type="number" ng-model="cui1" class="form-control" id="cui" placeholder="Ingrese numero de CUI">
+                                                                                </div>-->
+                                        <button type="button" ng-click="leerHuella()" class="btn btn-wide btn-primary">
+                                            Consultar
+                                        </button>
+                                        <a class="btn btn-danger btn-wide" href="#" ng-click="manualBio = false">
+                                            Cerrar &nbsp;                            
+                                        </a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h5 class="over-title">Alertas</h5>
+                            <div class="panel panel-white">
+                                <div class="panel-body">
+                                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+                                        {{alert.msg}}
+                                    </alert>
+                                    <button class='btn btn-primary btn-o' ng-click="closeAllAlert()">
+                                        Limpiar
+                                    </button>
+                                </div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- end: THIRD SECTION -->
     <!-- start: THIRD SECTION -->
     <div ng-show="manualBio" class="container-fluid container-fullw bg-white">
         <div class="row">
