@@ -170,7 +170,6 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
             $scope.leerDPI();
         };
         $scope.callBackAfterParseDPI = function () {
-            $scope.afterLeerHuella = null;
             SweetAlert.swal({
                 title: "Lectura de Huella",
                 text: "Huella del DPI Lista!, Presione en LEER HUELLA y coloque su pulgar DERECHO!",
