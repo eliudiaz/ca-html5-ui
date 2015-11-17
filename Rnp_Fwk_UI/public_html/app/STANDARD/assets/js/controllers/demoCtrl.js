@@ -2,7 +2,7 @@
 /** 
  * controllers used for the dashboard
  */
-app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoadingBar", function ($scope, Query, $timeout, SweetAlert, cfpLoadingBar) {
+app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoadingBar", "$document", "$modal", function ($scope, Query, $timeout, SweetAlert, cfpLoadingBar, $document, $modal) {
         $scope.automatic = false;
         $scope.manual = false;
         $scope.manualBio = false;
@@ -11,6 +11,12 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
         $scope.busyReadDPI = false;
         $scope.busyMatching = false;
         $scope.alerts = [];
+        $scope.scrollTo = function (e) {
+            $timeout(function () {
+                var someElement = angular.element(document.getElementById(e));
+                $document.scrollToElement(someElement, 50, 500);
+            }, 500);
+        };
         $scope.closeAlert = function (index) {
             $scope.alerts.splice(index, 1);
         };
@@ -127,9 +133,42 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
             cfpLoadingBar.start();
             $scope.addAlert("info", "Coloque su dedo PULGAR DERECHO en el lector!");
             $scope.addAlert("info", "Espere a que la luz cambie a roja!");
-            $scope.defCallBack = $scope.matchHuella;
+//            $scope.defCallBack = $scope.matchHuella;
+            $scope.defCallBack = $scope.getHuella;
             Query.get('http://localhost:4567/push-huella-read', function (r, e) {
                 $scope.getPushStatus(r.id);
+            });
+        };
+        $scope.getHuellas = function (r) {
+            $scope.complete = false;
+            $scope.timeOutPush = 15000;
+            cfpLoadingBar.start();
+            $scope.addAlert("info", r.valor);
+//            $scope.defCallBack = $scope.parseMatchResult;
+            $scope.defCallBack = $scope.showHuellas;
+            Query.get('http://localhost:4567/push-remote-huella-read?cui=' + $scope.cui1, function (r, e) {
+                $scope.getPushStatus(r.id);
+            });
+        };
+        $scope.showHuellas = function (r) {
+            $scope.open('lg', r);
+        };
+        $scope.open = function (size, r) {
+            var modalInstance = $modal.open({
+                templateUrl: 'huellasModal.html',
+                controller: 'ModalInstanceCtrl',
+                size: size,
+                resolve: {
+                    items: function () {
+                        return r;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function () {
+                $scope.matchHuella({valor: "Envio de huellas para verificacion..."});
+            }, function () {
+                $scope.addAlert("warning", "Comparacion de huellas cancelado!");
             });
         };
         $scope.cui1 = "";
@@ -179,7 +218,7 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
                 confirmButtonText: "LEER HUELLA"
             }, function (isConfirm) {
                 if (isConfirm) {
-                    $scope.cui1= $scope.persona.cui;
+                    $scope.cui1 = $scope.persona.cui;
                     $scope.leerHuella();
                 }
             });
@@ -219,5 +258,22 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
                 type: "success",
                 confirmButtonColor: "#007AFF"
             });
+        };
+    }]);
+
+
+app.controller('ModalInstanceCtrl', ["$scope", "$modalInstance", "items", function ($scope, $modalInstance, items) {
+
+        $scope.huellas = items;
+//        $scope.selected = {
+//            item: $scope.items[0]
+//        };
+
+        $scope.ok = function () {
+            $modalInstance.close();
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
         };
     }]);
