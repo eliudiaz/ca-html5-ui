@@ -35,15 +35,32 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
         $scope.timeOutPush = 5000;
         $scope.onTimeoutCallBack = function () {
         };
+        $scope.onError = function (e) {
+            cfpLoadingBar.complete();
+            SweetAlert.swal({
+                title: "Error realizando solicitud!",
+                text: e.message,
+                type: "warning",
+                showCancelButton: true
+            });
+        };
         $scope.cancelPush = function (id) {
             $timeout(function () {
                 Query.get('http://localhost:4567/push-cancel?id=' + id, function (r, e) {
+                    if (e !== null) {
+                        $scope.onError(e);
+                        return;
+                    }
                 });
             }, 100);
         };
         $scope.getPushStatus = function (id) {
             var rId = id;
             Query.get('http://localhost:4567/get-status?id=' + id, function (r, e) {
+                if (e !== null) {
+                    $scope.onError(e);
+                    return;
+                }
                 if (r.ready) {
                     $scope.getPushResult(rId);
                 } else {
@@ -73,6 +90,11 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
         $scope.getPushResult = function (id) {
             Query.get('http://localhost:4567/get-result?id=' + id, function (r, e) {
                 $scope.complete = true;
+                if (e !== null) {
+                    cfpLoadingBar.complete();
+                    $scope.onError(e);
+                    return;
+                }
                 cfpLoadingBar.set(0.6);
                 $scope.defCallBack(r.data);
                 if ($scope.complete) {
@@ -87,6 +109,10 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
             cfpLoadingBar.start();
             $scope.defCallBack = $scope.parseDPIData;
             Query.get('http://localhost:4567/push-dpi-read', function (r, e) {
+                if (e !== null) {
+                    $scope.onError(e);
+                    return;
+                }
                 $scope.getPushStatus(r.id);
             });
         };
@@ -132,25 +158,35 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
             };
             cfpLoadingBar.start();
             $scope.addAlert("info", "Coloque su dedo PULGAR DERECHO en el lector!");
-            $scope.addAlert("info", "Espere a que la luz cambie a roja!");
-//            $scope.defCallBack = $scope.matchHuella;
-            $scope.defCallBack = $scope.getHuella;
-            Query.get('http://localhost:4567/push-huella-read', function (r, e) {
+            $scope.defCallBack = $scope.getHuellas;
+            Query.get('http://localhost:4567/push-huella-read?cui=' + $scope.cui1, function (r, e) {
+                if (e !== null) {
+                    $scope.onError(e);
+                    $scope.busyMatching = false;
+                    return;
+                }
                 $scope.getPushStatus(r.id);
             });
         };
         $scope.getHuellas = function (r) {
+            $scope.busyMatching = true;
+            $scope.timeOutPush = 25000;
             $scope.complete = false;
-            $scope.timeOutPush = 15000;
             cfpLoadingBar.start();
-            $scope.addAlert("info", r.valor);
-//            $scope.defCallBack = $scope.parseMatchResult;
+            $scope.addAlert("info", "Huellas listas!, cargando vista previa!");
             $scope.defCallBack = $scope.showHuellas;
+            cfpLoadingBar.set(0.3);
             Query.get('http://localhost:4567/push-remote-huella-read?cui=' + $scope.cui1, function (r, e) {
+                if (e !== null) {
+                    $scope.onError(e);
+                    return;
+                }
                 $scope.getPushStatus(r.id);
             });
         };
         $scope.showHuellas = function (r) {
+            $scope.busyMatching = false;
+            cfpLoadingBar.complete();
             $scope.open('lg', r);
         };
         $scope.open = function (size, r) {
@@ -174,11 +210,16 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
         $scope.cui1 = "";
         $scope.matchHuella = function (r) {
             $scope.complete = false;
+            $scope.busyMatching = true;
             $scope.timeOutPush = 15000;
             cfpLoadingBar.start();
             $scope.addAlert("info", r.valor);
             $scope.defCallBack = $scope.parseMatchResult;
             Query.get('http://localhost:4567/push-huella-compare?cui=' + $scope.cui1, function (r, e) {
+                if (e !== null) {
+                    $scope.onError(e);
+                    return;
+                }
                 $scope.getPushStatus(r.id);
             });
         };
@@ -205,6 +246,7 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
             $scope.busyMatching = false;
         };
         $scope.leerDPI_Huella = function () {
+            $scope.busyMatching = true;
             $scope.afterLeerDPI = $scope.callBackAfterParseDPI;
             $scope.leerDPI();
         };
@@ -235,6 +277,10 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
             $scope.addAlert("info", "Espere a que la luz cambie a roja!");
             $scope.defCallBack = $scope.parseOnlineRes;
             Query.get('http://localhost:4567/push-bio-search?cui=' + $scope.cui2, function (r, e) {
+                if (e !== null) {
+                    $scope.onError(e);
+                    return;
+                }
                 $scope.getPushStatus(r.id);
             });
         };
@@ -265,10 +311,6 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
 app.controller('ModalInstanceCtrl', ["$scope", "$modalInstance", "items", function ($scope, $modalInstance, items) {
 
         $scope.huellas = items;
-//        $scope.selected = {
-//            item: $scope.items[0]
-//        };
-
         $scope.ok = function () {
             $modalInstance.close();
         };

@@ -199,7 +199,7 @@
                                                                                     </label>
                                                                                     <input type="number" ng-model="cui1" class="form-control" id="cui" placeholder="Ingrese numero de CUI">
                                                                                 </div>-->
-                                        <button type="button" ng-click="leerDPI_Huella()" class="btn btn-wide btn-primary">
+                                        <button type="button" ng-disabled="busyMatching" ng-click="leerDPI_Huella()" class="btn btn-wide btn-primary">
                                             Leer Huellas
                                         </button>
                                         <a class="btn btn-danger btn-wide" href="#" ng-click="opcion = 6;">
@@ -238,7 +238,7 @@
                             <div class="panel panel-white">
                                 <div class="panel-body">
                                   <div class="user-image">
-                                      <div class="thumbnail">}
+                                      <div class="thumbnail">
                                         <img data-ng-src="data:image/png;base64,{{huellas.h1}}" alt="" ng-if="!noH1">
                                       </div>
                                   </div>    
@@ -260,8 +260,8 @@
         </div>                
         </div>
         <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="compare()">OK</button>
-        <button class="btn btn-primary btn-o" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary" ng-click="ok()">Comparar</button>
+        <button class="btn btn-primary btn-o" ng-click="cancel()">Cancelar</button>
         </div>
     </script>
     <!-- end: THIRD SECTION -->

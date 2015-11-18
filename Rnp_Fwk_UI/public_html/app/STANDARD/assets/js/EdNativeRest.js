@@ -167,9 +167,17 @@
                                     }
                                 })();
                             }
-                            requestObject.send(body);
+                            try {
+                                requestObject.send(body);
+                            } catch (e) {
+                                callCallbacks(callHash, {message:'Error de comunicacion!'});
+                            }
                         } else {
-                            requestObject.send(null);
+                            try {
+                                requestObject.send(null);
+                            } catch (e) {
+                                callCallbacks(callHash, {message:'Error de comunicacion!'});
+                            }
                         }
                     }
                 };
@@ -280,7 +288,7 @@ remoteDao.factory('Query', [function () {
 
         this.get = function (url, callback) {
             window.Loader.get(url, null, function (e, r) {
-                vigil.response=r;
+                vigil.response = r;
                 console.info("+" + JSON.stringify(vigil.response));
                 if (callback) {
                     callback(r, e);
