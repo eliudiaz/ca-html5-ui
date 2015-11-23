@@ -250,17 +250,20 @@ app.controller('demoCtrl', ["$scope", "Query", "$timeout", 'SweetAlert', "cfpLoa
             $scope.afterLeerDPI = $scope.callBackAfterParseDPI;
             $scope.leerDPI();
         };
+        $scope.buscaHuellaDPI=function(){
+            $scope.callBackAfterParseDPI();
+        };
         $scope.callBackAfterParseDPI = function () {
             SweetAlert.swal({
                 title: "Lectura de Huella",
-                text: "Huella del DPI Lista!, Presione en LEER HUELLA y coloque su pulgar DERECHO!",
+                text: "Presione en LEER HUELLA y coloque su pulgar DERECHO!",
                 type: "success",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "LEER HUELLA"
             }, function (isConfirm) {
                 if (isConfirm) {
-                    $scope.cui1 = $scope.persona.cui;
+//                    $scope.cui1 = $scope.persona.cui;
                     $scope.leerHuella();
                 }
             });

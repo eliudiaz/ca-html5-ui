@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <!--div class="col-sm-4">
                 <div class="panel panel-white no-radius text-center">
                     <div class="panel-body">
                         <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
@@ -43,7 +43,7 @@
                         </p>
                     </div>
                 </div>
-            </div>
+            </div-->
             <div class="col-sm-4">
                 <div class="panel panel-white no-radius text-center">
                     <div class="panel-body">
@@ -273,7 +273,7 @@
                     <div class="panel-body">
                         <div class="partition-light-grey padding-15 text-center margin-bottom-20">
                             <h4 class="no-margin">Busqueda Electrónica por Huella</h4>
-                            <span class="text-light">Debe proporcionar un numero de CUI y la huella del incide derecho</span>
+                            <span class="text-light">Debe proporcionar un numero de CUI y la huella del pulgar derecho</span>
                         </div>
                         <div class="col-lg-6 col-md-8">
                             <div class="panel panel-white">
@@ -288,10 +288,10 @@
                                             </label>
                                             <input type="number" ng-model="cui1" class="form-control" id="cui" placeholder="Ingrese numero de CUI">
                                         </div>
-                                        <button type="button" ng-click="leerHuella()" class="btn btn-wide btn-primary">
+                                        <button ng-disabled="busyMatching" type="button" ng-click="buscaHuellaDPI()" class="btn btn-wide btn-primary">
                                             Consultar
                                         </button>
-                                        <a class="btn btn-danger btn-wide" href="#" ng-click="manualBio = false">
+                                        <a class="btn btn-danger btn-wide" href="#" ng-click="opcion=99;">
                                             Cerrar &nbsp;                            
                                         </a>
                                     </form>
@@ -316,6 +316,43 @@
 
         </div>
     </div>
+    <script type="text/ng-template" id="huellasModal2.html">
+        <div class="modal-header">
+        <h3 class="modal-title">Vista Previa Huellas</h3>
+        </div>
+        <div class="modal-body">
+        <div class="row">
+             <div class="col-md-4">
+                            <h5 class="over-title">Huella RENAP</h5>
+                            <div class="panel panel-white">
+                                <div class="panel-body">
+                                  <div class="user-image">
+                                      <div class="thumbnail">
+                                        <img data-ng-src="data:image/png;base64,{{huellas.h1}}" alt="" ng-if="!noH1">
+                                      </div>
+                                  </div>    
+                                </div>
+                            </div>
+             </div>     
+             <div class="col-md-4">
+                            <h5 class="over-title">Huella Lector</h5>
+                            <div class="panel panel-white">
+                                <div class="panel-body">
+                                    <div class="user-image">
+                                      <div class="thumbnail">
+                                        <img data-ng-src="data:image/png;base64,{{huellas.h2}}" alt="" ng-if="!noH2">
+                                      </div>
+                                    </div>   
+                                </div>
+                            </div>
+             </div>
+        </div>                
+        </div>
+        <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">Comparar</button>
+        <button class="btn btn-primary btn-o" ng-click="cancel()">Cancelar</button>
+        </div>
+    </script>
     <!-- end: THIRD SECTION -->
     <!-- start: FOURTH SECTION -->
     <div  id="opcion3" ng-show="opcion === 3" class="container-fluid container-fullw bg-white">
